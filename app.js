@@ -1,4 +1,4 @@
-const VERSION='0.12';
+const VERSION='0.13';
 const STORAGE='gefuehlskompass-prototype-catalog-v03';
 const ENTRIES='gefuehlskompass-prototype-entries-v03';
 
@@ -126,7 +126,7 @@ document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>setPage(b.dataset.pag
 if('serviceWorker' in navigator){
   window.addEventListener('load',async()=>{
     try{
-      const registration=await navigator.serviceWorker.register('./sw.js?v=0.12',{updateViaCache:'none'});
+      const registration=await navigator.serviceWorker.register('./sw.js?v=0.13',{updateViaCache:'none'});
       await registration.update();
     }catch(error){console.warn('Service Worker konnte nicht aktualisiert werden.',error)}
   });
