@@ -1,9 +1,9 @@
-const VERSION='0.7';
+const VERSION='0.10';
 const CACHE=`gefuehlskompass-prototyp-v${VERSION}`;
 const CORE=[
-  './index.html?v=0.7',
-  './styles.css?v=0.9',
-  './app.js?v=0.9',
+  './index.html?v=0.10',
+  './styles.css?v=0.10',
+  './app.js?v=0.10',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -41,7 +41,7 @@ self.addEventListener('fetch',event=>{
   if(url.origin!==self.location.origin) return;
 
   if(event.request.mode==='navigate'){
-    event.respondWith(networkFirst(event.request,'./index.html?v=0.7'));
+    event.respondWith(networkFirst(event.request,'./index.html?v=0.10'));
     return;
   }
 
@@ -50,7 +50,5 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cached=>cached||networkFirst(event.request))
-  );
+  event.respondWith(caches.match(event.request).then(cached=>cached||networkFirst(event.request)));
 });
