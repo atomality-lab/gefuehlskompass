@@ -1,7 +1,7 @@
 {
-  "name":"Gefühlskompass – Prototyp",
+  "name":"Gefühlskompass – Phase 2",
   "short_name":"Gefühlskompass",
-  "description":"Dialogbasierter Klick-Prototyp zum Erkunden und Benennen von Gefühlen.",
+  "description":"Dialogbasierter Lernbegleiter zur Gefühlswahrnehmung",
   "start_url":"./index.html",
   "scope":"./",
   "display":"standalone",
