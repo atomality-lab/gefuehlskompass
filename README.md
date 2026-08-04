@@ -1,8 +1,12 @@
-# Gefühlskompass PWA – Klick-Prototyp V0.4
+# Gefühlskompass – Klick-Prototyp V0.5
 
-## Änderung
-Die Zurück-/Weiter-Navigation liegt nun in einer eigenständigen, dauerhaft sichtbaren Leiste direkt über der Hauptnavigation. Dadurch ist der Weiterbutton in Schritt 1 auch in der installierten Smartphone-App immer erreichbar und überdeckt gleichzeitig keine Auswahlelemente.
+## Korrektur gegenüber V0.4
 
+- fehlende JavaScript-Referenz auf die Dialognavigation ergänzt
+- Mittelteil rendert wieder korrekt
+- sichtbare Version, Asset-Versionen und Service-Worker-Cache auf V0.5 erhöht
+- alle Funktionen aus V0.4 bleiben enthalten
 
-## Korrektur
-Die sichtbare Versionsanzeige und die interne VERSION-Konstante wurden auf 0.4 korrigiert. Die bestehenden lokalen Speicherschlüssel bleiben absichtlich unverändert, damit Testdaten aus V0.3 nicht verloren gehen.
+## Aktualisierung
+
+Den Inhalt dieses Ordners vollständig veröffentlichen. Danach die Seite einmal mit `?v=0.5` öffnen.

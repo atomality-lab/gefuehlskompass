@@ -1,4 +1,4 @@
-const VERSION='0.4';
+const VERSION='0.5';
 const STORAGE='gefuehlskompass-prototype-catalog-v03';
 const ENTRIES='gefuehlskompass-prototype-entries-v03';
 
@@ -56,6 +56,7 @@ let draft=newDraft();
 const content=document.getElementById('content');
 const modal=document.getElementById('modal');
 const modalBody=document.getElementById('modal-body');
+const wizardActions=document.getElementById('wizard-actions');
 
 function newDraft(){return {situation:'',situationDetail:'',body:[],regions:[],valence:'',energy:'',arousal:'',impulses:[],subs:[],relationStarter:'Ich fühle mich so, weil …',relation:'',thought:'',intensity:5,candidates:[],chosenMain:'',confidence:50,needs:[],needCustom:'',createdAt:new Date().toISOString()}}
 function loadJson(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}}
