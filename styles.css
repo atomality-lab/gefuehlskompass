@@ -49,3 +49,67 @@ dialog{border:0;border-radius:22px;padding:0;width:min(600px,calc(100vw - 24px))
 @media(max-width:380px){.choice-grid{grid-template-columns:1fr}.brand small{max-width:145px}}
 
 .summary-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:24px;padding-bottom:10px}.summary-actions .primary{order:1}.summary-actions .ghost{order:2}
+
+/* V0.11: robustes App-Layout ohne überlagernde Fußnavigation */
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+body {
+  position: fixed;
+  inset: 0;
+}
+#app {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+.topbar {
+  position: relative;
+  top: auto;
+  grid-row: 1;
+}
+.content,
+.content.dialog-mode {
+  grid-row: 2;
+  min-height: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 14px 28px;
+  scroll-padding-bottom: 32px;
+}
+.bottom-nav {
+  grid-row: 3;
+  position: relative;
+  inset: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  flex: none;
+}
+.dialog-panel {
+  margin-bottom: 12px;
+}
+.dialog-actions {
+  padding-bottom: 8px !important;
+}
+@media(max-width:560px) {
+  .content,
+  .content.dialog-mode {
+    padding: 12px 10px 30px;
+  }
+  .dialog-actions {
+    margin-bottom: 6px !important;
+    padding-bottom: 10px !important;
+  }
+}

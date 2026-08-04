@@ -1,8 +1,11 @@
-# Gefühlskompass PWA – Klick-Prototyp V0.10
+# Gefühlskompass PWA Prototyp V0.11
 
-## Änderungen
-- Die Hauptnavigation bleibt in allen Dialogschritten sichtbar.
-- Der Dialoginhalt erhält ausreichend Abstand zur festen Fußnavigation.
-- Auf der Zusammenfassung steht „Speichern & neuer Eintrag“ als erster, gut sichtbarer Hauptbutton.
-- „Zurück“ steht darunter als sekundäre Aktion.
-- Alle Versionsangaben und der Service-Worker-Cache stehen einheitlich auf V0.10.
+## Änderung
+
+Die Oberfläche nutzt nun ein festes Drei-Zonen-Layout:
+
+1. Kopfzeile
+2. eigener, vollständig scrollbarer Inhaltsbereich
+3. Menüleiste mit eigenem Platz
+
+Die Menüleiste überlagert dadurch keine Auswahlfelder oder Dialogbuttons mehr. Der Weiter-Button in Schritt 1 ist innerhalb des Inhaltsbereichs vollständig erreichbar.
