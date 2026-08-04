@@ -1,11 +1,7 @@
-# Gefühlskompass PWA Prototyp V0.11
+# Gefühlskompass PWA Prototyp V0.12
 
 ## Änderung
-
-Die Oberfläche nutzt nun ein festes Drei-Zonen-Layout:
-
-1. Kopfzeile
-2. eigener, vollständig scrollbarer Inhaltsbereich
-3. Menüleiste mit eigenem Platz
-
-Die Menüleiste überlagert dadurch keine Auswahlfelder oder Dialogbuttons mehr. Der Weiter-Button in Schritt 1 ist innerhalb des Inhaltsbereichs vollständig erreichbar.
+- Der Mittelteil nutzt ein Android-robustes Flex-Layout.
+- Nur der Mittelteil scrollt; Kopf- und Menüleiste erhalten jeweils eigenen Platz.
+- `overflow-y: auto`, `min-height: 0` und Touch-Scrolling sind explizit gesetzt.
+- Die Dialogbuttons liegen weiterhin unter dem jeweiligen Schrittinhalt.
