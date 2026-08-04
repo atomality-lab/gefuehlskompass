@@ -1,7 +1,10 @@
-# Gefühlskompass PWA – Klick-Prototyp V0.8
+# Gefühlskompass PWA – Klick-Prototyp V0.9
 
-## Änderung in V0.8
+## Änderung
+Die über Jahre von Versionen angesammelten, widersprüchlichen CSS-Regeln wurden vollständig entfernt.
 
-Die Zurück-/Weiter-Navigation wird direkt innerhalb des jeweiligen Schritt-Panels gerendert. Sie liegt damit im selben scrollbaren Dokumentfluss wie die Auswahlfelder und kann keine Tags oder Gefühlskarten mehr überdecken.
-
-Zusätzlich werden neue Schritte wieder oben geöffnet.
+- Die Seite ist auf Smartphones normal vertikal scrollbar.
+- Zurück und Weiter stehen im Dokumentfluss unter dem Schrittinhalt.
+- Während des geführten Dialogs wird die feste Hauptnavigation ausgeblendet.
+- Kein Auswahlfeld kann mehr durch eine Navigation überlagert werden.
+- Versionsangaben und Service-Worker-Cache stehen einheitlich auf V0.9.

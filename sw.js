@@ -2,8 +2,8 @@ const VERSION='0.7';
 const CACHE=`gefuehlskompass-prototyp-v${VERSION}`;
 const CORE=[
   './index.html?v=0.7',
-  './styles.css?v=0.8',
-  './app.js?v=0.8',
+  './styles.css?v=0.9',
+  './app.js?v=0.9',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
