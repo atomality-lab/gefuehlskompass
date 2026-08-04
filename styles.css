@@ -26,3 +26,11 @@
   .dialog-actions{margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important}
   .dialog-panel{min-height:auto}
 }
+
+
+/* V0.4: verlässliche externe Dialognavigation */
+.content.dialog-mode{padding-bottom:190px}
+.wizard-actions{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;z-index:25;width:min(792px,calc(100% - 20px));display:flex;gap:10px;padding:10px;background:rgba(255,255,255,.98);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 32px rgba(36,65,61,.18);backdrop-filter:blur(14px)}
+.wizard-actions button{flex:1 1 0;border:0;border-radius:15px;padding:13px 16px;min-height:50px;font-weight:800}
+.dialog-actions{display:none!important}
+@media(max-width:560px){.content.dialog-mode{padding-bottom:205px}.wizard-actions{bottom:78px;width:calc(100% - 14px);padding:8px;border-radius:16px}.wizard-actions button{min-height:52px}}
