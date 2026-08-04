@@ -9,3 +9,20 @@
 .main-toggle{width:100%;margin-top:14px;padding:12px 14px;border-radius:15px;font-weight:800}
 .all-main-wrap{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
 @media(max-width:560px){.content{padding-bottom:132px}.dialog-actions{bottom:76px;margin-left:-8px;margin-right:-8px;padding-left:8px;padding-right:8px}.dialog-actions button{min-height:48px}}
+
+/* V0.3: Mobile Navigation ohne Überlagerung */
+.dialog-panel{padding-bottom:18px;overflow:visible}
+.dialog-actions{position:static!important;bottom:auto!important;z-index:auto;background:none!important;padding:18px 0 0!important;margin:24px 0 0!important;border-top:1px solid var(--line)}
+.dialog-actions button{box-shadow:none!important;min-height:48px}
+.chip-cloud,.choice-grid{scroll-margin-bottom:120px}
+.emotion-card{position:relative;z-index:1;cursor:pointer;touch-action:manipulation}
+.emotion-card.selected{outline:4px solid rgba(69,107,103,.25);background:#edf6f3}
+.feeling-reminder{display:grid;gap:5px;background:#e7f1ef;border:1px solid #bfd4cf;border-radius:18px;padding:14px;margin:14px 0 18px}
+.feeling-reminder span{font-size:.82rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.feeling-reminder strong{font-size:1.25rem;color:var(--accent)}
+.feeling-reminder small{color:var(--muted)}
+@media(max-width:560px){
+  .content{padding-bottom:128px}
+  .dialog-actions{margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important}
+  .dialog-panel{min-height:auto}
+}

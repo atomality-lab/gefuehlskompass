@@ -1,10 +1,13 @@
-# Gefühlskompass PWA Klick-Prototyp V0.2
+# Gefühlskompass PWA – Klick-Prototyp V0.3
 
-## Korrekturen
-- Der Weiterbutton reagiert nun zuverlässig nach Mehrfachauswahlen.
-- Die Dialognavigation bleibt auf kleinen Bildschirmen sichtbar.
-- Schritt 8 trennt Hauptgefühl und zugehörige Untergefühle optisch.
-- Zusätzlich zu den abgeleiteten Vorschlägen können alle anderen Hauptgefühle gewählt werden.
-- Der fehlende Weiterbutton in Schritt 1 ist auf dem Smartphone erreichbar und bleibt sichtbar.
+## Änderungen
 
-Phase 1 bleibt ein Klick-Prototyp.
+- Zurück- und Weiterbuttons liegen nicht mehr über den Auswahlfeldern.
+- Die Dialogseite lässt sich auf Smartphones wieder vollständig scrollen.
+- Alternative Hauptgefühle sind ausdrücklich anklickbar.
+- Schritt 9 zeigt das gewählte beziehungsweise die ursprünglich möglichen Gefühle erneut an.
+- Die Zusammenfassung bietet „Speichern & neuer Eintrag“ und führt direkt zurück zum ersten Schritt.
+- „Kopfschmerz“ wurde durch das allgemeinere „Schmerz“ ersetzt.
+- „Entspannung“ wurde als Körperempfindung ergänzt.
+
+Der Prototyp dient weiterhin dem Test des Dialogablaufs und ist noch keine produktive Vollversion.
