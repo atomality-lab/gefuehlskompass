@@ -10,7 +10,7 @@
 .all-main-wrap{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
 @media(max-width:560px){.content{padding-bottom:132px}.dialog-actions{bottom:76px;margin-left:-8px;margin-right:-8px;padding-left:8px;padding-right:8px}.dialog-actions button{min-height:48px}}
 
-/* V0.3: Mobile Navigation ohne Überlagerung */
+/* V0.4: dauerhaft sichtbare Dialognavigation */
 .dialog-panel{padding-bottom:18px;overflow:visible}
 .dialog-actions{position:static!important;bottom:auto!important;z-index:auto;background:none!important;padding:18px 0 0!important;margin:24px 0 0!important;border-top:1px solid var(--line)}
 .dialog-actions button{box-shadow:none!important;min-height:48px}
