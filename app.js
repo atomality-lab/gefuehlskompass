@@ -1,4 +1,4 @@
-const VERSION='0.5';
+const VERSION='0.6';
 const STORAGE='gefuehlskompass-prototype-catalog-v03';
 const ENTRIES='gefuehlskompass-prototype-entries-v03';
 

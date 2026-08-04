@@ -34,3 +34,9 @@
 .wizard-actions button{flex:1 1 0;border:0;border-radius:15px;padding:13px 16px;min-height:50px;font-weight:800}
 .dialog-actions{display:none!important}
 @media(max-width:560px){.content.dialog-mode{padding-bottom:205px}.wizard-actions{bottom:78px;width:calc(100% - 14px);padding:8px;border-radius:16px}.wizard-actions button{min-height:52px}}
+
+/* V0.6: Dialognavigation liegt im normalen Dokumentfluss und überdeckt keine Auswahlfelder. */
+.content.dialog-mode{padding-bottom:18px}
+.wizard-actions{position:static;left:auto;transform:none;bottom:auto;z-index:auto;width:min(792px,calc(100% - 20px));margin:0 auto 96px;display:flex;gap:10px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(36,65,61,.12);backdrop-filter:none}
+.wizard-actions button{flex:1 1 0;border:0;border-radius:15px;padding:13px 16px;min-height:50px;font-weight:800}
+@media(max-width:560px){.content.dialog-mode{padding-bottom:10px}.wizard-actions{position:static;bottom:auto;width:calc(100% - 20px);margin:0 auto 94px;padding:8px;border-radius:16px}.wizard-actions button{min-height:52px}}
