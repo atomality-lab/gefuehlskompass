@@ -74,11 +74,11 @@ function render(){if(page==='dialog')renderDialog();if(page==='history')renderHi
 function shell(title,intro,body){content.innerHTML=`<section class="panel"><h1 class="screen-title">${title}</h1>${intro?`<p class="intro">${intro}</p>`:''}${body}</section>`}
 function stepShell(title,intro,body,canNext=true){
   content.classList.add('dialog-mode');
-  wizardActions.classList.remove('hidden');
-  content.innerHTML=`<section class="panel dialog-panel"><div class="step-head"><div><div class="eyebrow">Schritt ${step} von 10</div><h1>${title}</h1><p class="muted">${intro}</p></div></div><div class="progress"><div style="width:${step*10}%"></div></div>${body}</section>`;
-  wizardActions.innerHTML=`${step>1?'<button type="button" class="ghost" id="back">Zurück</button>':''}<button type="button" class="primary" id="next" data-ready="${canNext}">${step===10?'Zusammenfassung':'Weiter'}</button>`;
-  document.getElementById('back')?.addEventListener('click',()=>{step--;renderDialog()});
-  document.getElementById('next')?.addEventListener('click',()=>{if(validateStep()){step++;if(step===8)deriveMain();if(step===11)return renderSummary();renderDialog()}})
+  wizardActions.classList.add('hidden');
+  const actions=`<div class="dialog-actions" aria-label="Dialognavigation">${step>1?'<button type="button" class="ghost" id="back">Zurück</button>':''}<button type="button" class="primary" id="next" data-ready="${canNext}">${step===10?'Zusammenfassung':'Weiter'}</button></div>`;
+  content.innerHTML=`<section class="panel dialog-panel"><div class="step-head"><div><div class="eyebrow">Schritt ${step} von 10</div><h1>${title}</h1><p class="muted">${intro}</p></div></div><div class="progress"><div style="width:${step*10}%"></div></div>${body}${actions}</section>`;
+  document.getElementById('back')?.addEventListener('click',()=>{step--;renderDialog();window.scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('next')?.addEventListener('click',()=>{if(validateStep()){step++;if(step===8)deriveMain();if(step===11)return renderSummary();renderDialog();window.scrollTo({top:0,behavior:'smooth'})}})
 }
 function validateStep(){if(step===1&&!draft.situation){toast('Bitte wähle einen Kontext.');return false}if(step===2&&!draft.body.length){toast('Bitte wähle mindestens eine Körperempfindung.');return false}if(step===3&&(!draft.valence||!draft.energy||!draft.arousal)){toast('Bitte beantworte die drei Grundfragen.');return false}if(step===5&&!draft.subs.length){toast('Bitte wähle mindestens ein mögliches Untergefühl.');return false}if(step===8&&!draft.chosenMain&&draft.candidates.length){toast('Bitte wähle das am besten passende Hauptgefühl.');return false}return true}
 
@@ -126,7 +126,7 @@ document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>setPage(b.dataset.pag
 if('serviceWorker' in navigator){
   window.addEventListener('load',async()=>{
     try{
-      const registration=await navigator.serviceWorker.register('./sw.js?v=0.7',{updateViaCache:'none'});
+      const registration=await navigator.serviceWorker.register('./sw.js?v=0.8',{updateViaCache:'none'});
       await registration.update();
     }catch(error){console.warn('Service Worker konnte nicht aktualisiert werden.',error)}
   });
