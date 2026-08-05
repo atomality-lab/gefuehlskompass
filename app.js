@@ -1,4 +1,4 @@
-const VERSION='0.21';
+const VERSION='0.22';
 const DB_NAME='gefuehlskompass-phase2-db';
 const DB_VERSION=1;
 
@@ -60,6 +60,7 @@ const modal=document.getElementById('modal');
 const modalBody=document.getElementById('modal-body');
 const catalogFile=document.getElementById('catalog-file');
 const dataFile=document.getElementById('data-file');
+const backupFile=document.getElementById('backup-file');
 
 function newDraft(){return {id:null,situation:'',situationDetail:'',eventText:'',body:[],regions:[],valence:'',energy:'',arousal:'',impulses:[],subs:[],relationStarter:'Ich fühle mich so, weil …',relation:'',thought:'',intensity:5,candidates:[],chosenMain:'',confidence:50,needs:[],needCustom:'',feelingMessage:'',createdAt:new Date().toISOString()}}
 function clone(v){return JSON.parse(JSON.stringify(v))}
@@ -77,6 +78,7 @@ function idbGet(store,key){return new Promise((resolve,reject)=>{const tx=db.tra
 function idbPut(store,value,key){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');const req=key===undefined?tx.objectStore(store).put(value):tx.objectStore(store).put(value,key);req.onsuccess=()=>resolve();req.onerror=()=>reject(req.error)})}
 function idbDelete(store,key){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');const req=tx.objectStore(store).delete(key);req.onsuccess=()=>resolve();req.onerror=()=>reject(req.error)})}
 function idbAll(store){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readonly');const req=tx.objectStore(store).getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error)})}
+function idbClear(store){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite');const req=tx.objectStore(store).clear();req.onsuccess=()=>resolve();req.onerror=()=>reject(req.error)})}
 async function saveCatalog(){await idbPut('meta',catalog,'catalog')}
 async function saveEntry(entry){await idbPut('entries',entry);entries=await idbAll('entries');entries.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))}
 
@@ -136,7 +138,7 @@ dataFile.onchange=async()=>{const file=dataFile.files[0];if(!file)return;try{con
 
 function renderStats(){const total=Math.max(1,entries.length);const counts={};entries.forEach(e=>counts[e.chosenMain||'Offen']=(counts[e.chosenMain||'Offen']||0)+1);let angle=0;const segments=Object.entries(counts).map(([name,n])=>{const start=angle;angle+=n/total*360;return `${colorOf(name)} ${start}deg ${angle}deg`}).join(',');const ambiguous=entries.filter(e=>e.ambiguity==='mehrdeutig').length;const open=entries.filter(e=>e.ambiguity==='offen').length;const avg=entries.length?Math.round(entries.reduce((a,e)=>a+(e.confidence||0),0)/entries.length):0;shell('Auswertung','Die ersten funktionalen Auswertungen zeigen Verteilung, Sicherheit und Mehrdeutigkeit.',`<div class="stats-grid"><section class="panel chart-box"><h2>Gefühlsverteilung</h2><div class="pie-wrap"><div class="pie" style="background:conic-gradient(${segments||'#ddd 0 360deg'})"></div></div><div class="legend">${Object.entries(counts).map(([n,c])=>`<div class="legend-row"><span class="dot" style="background:${colorOf(n)}"></span><span>${esc(n)}</span><strong>${c}</strong></div>`).join('')||'<p>Noch keine Daten.</p>'}</div></section><section class="panel chart-box"><h2>Lernindikatoren</h2><p><strong>${avg}%</strong> durchschnittliche Sicherheit</p><div class="bar-track"><div class="bar" style="width:${avg}%"></div></div><p><strong>${ambiguous}</strong> mehrdeutige und <strong>${open}</strong> offene Einträge.</p><p class="muted">Später kann hier die Entwicklung nach Woche und Monat sowie häufige Gefühlspaare ergänzt werden.</p></section></div>`)}
 
-function renderCatalog(){shell('Katalog & Beziehungen','Hier pflegst du Begriffe und die Regeln, aus denen die Vorschläge berechnet werden.',`${catalogBlock('Situationen','situations',catalog.situations.map(x=>x.name))}${catalogBlock('Körperempfindungen','body',catalog.body)}${catalogBlock('Körperregionen','regions',catalog.regions)}${catalogBlock('Handlungsimpulse','impulses',catalog.impulses)}${catalogBlock('Bedürfnisse','needs',catalog.needs)}${mainCatalog()}${relationshipCatalog()}<section class="catalog-section"><h2>Sicherung und Bearbeitung am Rechner</h2><p class="muted">Der JSON-Export enthält alle Listen, Farben und Beziehungen. Du kannst die Datei in einem Texteditor bearbeiten und anschließend wieder importieren.</p><div class="button-row"><button class="secondary" id="export-rel">Katalog & Beziehungen exportieren</button><button class="secondary" id="import-rel">Katalog & Beziehungen importieren</button><button class="danger" id="reset-catalog">Standardkatalog wiederherstellen</button></div></section><p class="version-note">Gefühlskompass · Phase 2 · Version ${VERSION}</p>`);bindCatalog();document.getElementById('export-rel').onclick=exportCatalog;document.getElementById('import-rel').onclick=()=>catalogFile.click();document.getElementById('reset-catalog').onclick=()=>openConfirm('Katalog zurücksetzen?','Alle eigenen Begriffe und Beziehungen werden durch die Standardwerte ersetzt.',async()=>{catalog=clone(defaults);await saveCatalog();renderCatalog();toast('Katalog zurückgesetzt.')})}
+function renderCatalog(){shell('Katalog & Beziehungen','Hier pflegst du Begriffe und die Regeln, aus denen die Vorschläge berechnet werden.',`${catalogBlock('Situationen','situations',catalog.situations.map(x=>x.name))}${catalogBlock('Körperempfindungen','body',catalog.body)}${catalogBlock('Körperregionen','regions',catalog.regions)}${catalogBlock('Handlungsimpulse','impulses',catalog.impulses)}${catalogBlock('Bedürfnisse','needs',catalog.needs)}${mainCatalog()}${relationshipCatalog()}<section class="catalog-section"><h2>Gesamt-Backup</h2><p class="muted">Sichert Kataloge, Beziehungen und alle gespeicherten Einträge in einer einzigen Datei. So kannst du den vollständigen Stand zwischen Smartphone und Rechner übertragen.</p><div class="button-row"><button class="secondary" id="export-backup">Gesamt-Backup exportieren</button><button class="secondary" id="import-backup">Gesamt-Backup wiederherstellen</button></div></section><section class="catalog-section"><h2>Katalog separat sichern</h2><p class="muted">Der separate JSON-Export enthält nur Listen, Farben und Beziehungen. Er eignet sich weiterhin zur direkten Bearbeitung in einem Texteditor.</p><div class="button-row"><button class="secondary" id="export-rel">Katalog & Beziehungen exportieren</button><button class="secondary" id="import-rel">Katalog & Beziehungen importieren</button><button class="danger" id="reset-catalog">Standardkatalog wiederherstellen</button></div></section><p class="version-note">v${VERSION} · Build 05.08.2026</p>`);bindCatalog();document.getElementById('export-backup').onclick=exportFullBackup;document.getElementById('import-backup').onclick=()=>backupFile.click();document.getElementById('export-rel').onclick=exportCatalog;document.getElementById('import-rel').onclick=()=>catalogFile.click();document.getElementById('reset-catalog').onclick=()=>openConfirm('Katalog zurücksetzen?','Alle eigenen Begriffe und Beziehungen werden durch die Standardwerte ersetzt.',async()=>{catalog=clone(defaults);await saveCatalog();renderCatalog();toast('Katalog zurückgesetzt.')})}
 function catalogBlock(title,key,items){return `<section class="catalog-section"><h2>${title}</h2><div class="catalog-list">${items.map((x,i)=>`<div class="catalog-item"><span>${esc(x)}</span><button data-remove="${key}" data-i="${i}">Entfernen</button></div>`).join('')}</div><div class="button-row"><button class="secondary" data-add="${key}">+ Eintrag</button></div></section>`}
 function mainCatalog(){return `<section class="catalog-section"><h2>Hauptgefühle</h2><div class="catalog-list">${catalog.main.map((x,i)=>`<div class="catalog-item"><span><span class="dot" style="display:inline-block;background:${x.color};margin-right:8px"></span>${esc(x.name)}</span><button data-remove="main" data-i="${i}">Entfernen</button></div>`).join('')}</div><div class="button-row"><button class="secondary" data-add="main">+ Hauptgefühl</button></div></section>`}
 function relationshipCatalog(){return `<section class="catalog-section"><h2>Untergefühle und Vorschlagsregeln</h2><p class="muted">Öffne ein Untergefühl, um seine Zuordnung zu Körper, Grundrichtung und Handlungsimpuls zu bearbeiten.</p><div class="relation-editor">${catalog.sub.map((r,i)=>`<details class="rule-card"><summary>${esc(r.name)} → ${esc(r.main)}</summary><div class="button-row"><button class="secondary" data-edit-rule="${i}">Regel bearbeiten</button><button class="danger" data-remove-rule="${i}">Entfernen</button></div><p class="muted">Körper: ${esc(r.body.join(', ')||'—')}<br>Richtung: ${esc([...r.valence,...r.energy,...r.arousal].join(', ')||'—')}<br>Impulse: ${esc(r.impulses.join(', ')||'—')}</p></details>`).join('')}</div><div class="button-row"><button class="secondary" id="add-rule">+ Untergefühl mit Regel</button></div></section>`}
@@ -144,9 +146,59 @@ function bindCatalog(){document.querySelectorAll('[data-remove]').forEach(b=>b.o
 function openSimpleAdd(key){const isMain=key==='main';modalBody.innerHTML=`<h2>Eintrag hinzufügen</h2><label class="field"><span>Bezeichnung</span><input id="m-name"></label>${key==='situations'?'<label class="field"><span>Kurze Erläuterung</span><input id="m-hint"></label>':''}${isMain?'<label class="field"><span>Farbe</span><input id="m-color" type="color" value="#789c95"></label>':''}<div class="button-row"><button value="cancel" class="ghost">Abbrechen</button><button value="default" class="primary" id="m-save">Speichern</button></div>`;modal.showModal();document.getElementById('m-save').onclick=async e=>{e.preventDefault();const n=document.getElementById('m-name').value.trim();if(!n)return;if(key==='situations')catalog.situations.push({name:n,hint:document.getElementById('m-hint').value.trim()||'Eigener Kontext'});else if(isMain)catalog.main.push({name:n,color:document.getElementById('m-color').value});else addUnique(catalog[key],n);await saveCatalog();modal.close();renderCatalog()}}
 function checks(title,items,selected,prefix){return `<fieldset><legend>${title}</legend><div class="rule-grid">${items.map((x,i)=>`<label class="mini-check"><input type="checkbox" name="${prefix}" value="${esc(x)}" ${selected.includes(x)?'checked':''}>${esc(x)}</label>`).join('')}</div></fieldset>`}
 function openRuleEditor(index){const old=index>=0?catalog.sub[index]:{name:'',main:catalog.main[0]?.name||'',body:[],valence:[],energy:[],arousal:[],impulses:[]};modalBody.innerHTML=`<h2>${index>=0?'Vorschlagsregel bearbeiten':'Untergefühl und Regel anlegen'}</h2><label class="field"><span>Untergefühl</span><input id="r-name" value="${esc(old.name)}"></label><label class="field"><span>Hauptgefühl</span><select id="r-main">${catalog.main.map(x=>`<option ${x.name===old.main?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>${checks('Körperempfindungen',catalog.body,old.body,'r-body')}${checks('Grundrichtung: angenehm / neutral / unangenehm',['angenehm','neutral','unangenehm'],old.valence,'r-valence')}${checks('Energie',['wenig','mittel','viel'],old.energy,'r-energy')}${checks('Körperzustand',['ruhig','angespannt','aufgewühlt'],old.arousal,'r-arousal')}${checks('Handlungsimpulse',catalog.impulses,old.impulses,'r-impulses')}<div class="button-row"><button value="cancel" class="ghost">Abbrechen</button><button value="default" class="primary" id="r-save">Speichern</button></div>`;modal.showModal();document.getElementById('r-save').onclick=async e=>{e.preventDefault();const val=name=>[...modalBody.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);const rule={name:document.getElementById('r-name').value.trim(),main:document.getElementById('r-main').value,body:val('r-body'),valence:val('r-valence'),energy:val('r-energy'),arousal:val('r-arousal'),impulses:val('r-impulses')};if(!rule.name)return;if(index>=0)catalog.sub[index]=rule;else catalog.sub.push(rule);await saveCatalog();modal.close();renderCatalog()}}
+
+function exportFullBackup(){
+  const payload={
+    app:'Gefühlskompass',
+    format:'gesamt-backup',
+    schemaVersion:1,
+    appVersion:VERSION,
+    exportedAt:new Date().toISOString(),
+    catalog:clone(catalog),
+    entries:clone(entries)
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`gefuehlskompass-gesamt-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function restoreFullBackup(data){
+  if(!data||data.app!=='Gefühlskompass'||data.format!=='gesamt-backup')throw new Error('Keine gültige Gefühlskompass-Gesamtsicherung');
+  if(!data.catalog||!Array.isArray(data.catalog.main)||!Array.isArray(data.catalog.sub))throw new Error('Katalog im Backup ist unvollständig');
+  if(!Array.isArray(data.entries))throw new Error('Einträge im Backup fehlen');
+  await idbClear('entries');
+  for(const entry of data.entries){
+    if(!entry.id)entry.id=crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`;
+    await idbPut('entries',entry);
+  }
+  catalog=clone(data.catalog);
+  await saveCatalog();
+  entries=await idbAll('entries');
+  entries.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+}
+
+backupFile.onchange=async()=>{
+  const file=backupFile.files[0];
+  if(!file)return;
+  try{
+    const data=JSON.parse(await file.text());
+    openConfirm('Gesamt-Backup wiederherstellen?','Der aktuelle lokale Katalog und alle lokalen Einträge werden vollständig durch den Stand der Backup-Datei ersetzt.',async()=>{
+      try{
+        await restoreFullBackup(data);
+        renderCatalog();
+        toast(`${entries.length} Einträge und der vollständige Katalog wurden wiederhergestellt.`);
+      }catch(e){toast(`Wiederherstellung fehlgeschlagen: ${e.message}`)}
+    });
+  }catch(e){toast(`Backup konnte nicht gelesen werden: ${e.message}`)}
+  finally{backupFile.value=''}
+}
+
 function exportCatalog(){const blob=new Blob([JSON.stringify({app:'Gefühlskompass',version:VERSION,exportedAt:new Date().toISOString(),catalog},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`gefuehlskompass-katalog-beziehungen-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href)}
 catalogFile.onchange=async()=>{const file=catalogFile.files[0];if(!file)return;try{const data=JSON.parse(await file.text());const incoming=data.catalog||data;if(!Array.isArray(incoming.sub)||!Array.isArray(incoming.main)||!Array.isArray(incoming.body))throw new Error('Struktur unvollständig');catalog=incoming;await saveCatalog();renderCatalog();toast('Katalog und Beziehungen importiert.')}catch(e){toast(`Import fehlgeschlagen: ${e.message}`)}finally{catalogFile.value=''}}
 function openConfirm(title,text,yes){modalBody.innerHTML=`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="button-row"><button value="cancel" class="ghost">Abbrechen</button><button value="default" class="danger" id="confirm-yes">Bestätigen</button></div>`;modal.showModal();document.getElementById('confirm-yes').onclick=e=>{e.preventDefault();modal.close();yes()}}
 
-async function init(){db=await openDb();catalog=await idbGet('meta','catalog')||clone(defaults);await idbPut('meta',catalog,'catalog');entries=await idbAll('entries');entries.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>setPage(b.dataset.page));document.getElementById('restart').onclick=()=>openConfirm('Dialog neu starten?','Die bisherigen Angaben dieses Durchgangs werden verworfen.',()=>{editingId=null;draft=newDraft();step=1;showAllSubs=false;showAllMain=false;setPage('dialog')});render();if('serviceWorker' in navigator){try{const reg=await navigator.serviceWorker.register('./sw.js?v=0.21',{updateViaCache:'none'});await reg.update()}catch(e){console.warn(e)}}}
+async function init(){db=await openDb();catalog=await idbGet('meta','catalog')||clone(defaults);await idbPut('meta',catalog,'catalog');entries=await idbAll('entries');entries.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>setPage(b.dataset.page));document.getElementById('restart').onclick=()=>openConfirm('Dialog neu starten?','Die bisherigen Angaben dieses Durchgangs werden verworfen.',()=>{editingId=null;draft=newDraft();step=1;showAllSubs=false;showAllMain=false;setPage('dialog')});render();if('serviceWorker' in navigator){try{const reg=await navigator.serviceWorker.register('./sw.js?v=0.22',{updateViaCache:'none'});await reg.update()}catch(e){console.warn(e)}}}
 init().catch(e=>{content.innerHTML=`<section class="panel"><h1>Startfehler</h1><p>${esc(e.message)}</p></section>`});

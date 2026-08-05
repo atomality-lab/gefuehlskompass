@@ -9,12 +9,12 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=0.21">
+  <link rel="stylesheet" href="styles.css?v=0.22">
 </head>
 <body>
   <div id="app">
     <header class="topbar">
-      <div class="brand"><img src="icons/icon-192.png" alt=""><div><strong>Gefühlskompass</strong><small>Funktionaler Prototyp · Phase 2 · V0.21</small></div></div>
+      <div class="brand"><img src="icons/icon-192.png" alt=""><div><strong>Gefühlskompass</strong><small>v0.22</small></div></div>
       <button id="restart" class="icon-button" title="Dialog neu starten">↻</button>
     </header>
     <nav class="bottom-nav" aria-label="Hauptnavigation">
@@ -28,8 +28,9 @@
   <dialog id="modal"><form method="dialog" id="modal-body"></form></dialog>
   <input id="catalog-file" type="file" accept="application/json,.json" hidden>
   <input id="data-file" type="file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+  <input id="backup-file" type="file" accept="application/json,.json" hidden>
   <div id="toast" class="toast hidden"></div>
-  <script src="jszip.min.js?v=0.21"></script>
-  <script src="app.js?v=0.21"></script>
+  <script src="jszip.min.js?v=0.22"></script>
+  <script src="app.js?v=0.22"></script>
 </body>
 </html>

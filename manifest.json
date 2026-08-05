@@ -1,5 +1,5 @@
 {
-  "name":"Gefühlskompass – Phase 2",
+  "name":"Gefühlskompass",
   "short_name":"Gefühlskompass",
   "description":"Dialogbasierter Lernbegleiter zur Gefühlswahrnehmung",
   "start_url":"./index.html",
