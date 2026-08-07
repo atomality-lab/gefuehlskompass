@@ -1,21 +1,20 @@
-# Gefühlskompass PWA V0.22
+# Gefühlskompass PWA V0.23
 
-Neu in V0.22:
+Neu in V0.23:
 
-- Gesamt-Backup als eine JSON-Datei
-- sichert den vollständigen Katalog, alle Beziehungen und alle gespeicherten Einträge
-- vollständige Wiederherstellung auf einem anderen Gerät oder Browser
-- Sicherheitsabfrage vor dem Ersetzen lokaler Daten
-- separater Katalogexport bleibt für die Bearbeitung im Texteditor erhalten
-- sichtbare Versionsanzeige nur noch als `v0.22`
-- Build-Datum im Katalogbereich
+- vollständiges gewichtetes Gefühlsmodell aus `Gefuehlsmodell_Import.xlsx`
+- Netz 1: Grundrichtung, Energie, Körperzustand, Körperempfindungen und Handlungsimpulse werden gewichtet zu Untergefühlsvorschlägen verrechnet
+- Netz 1 wird über die tatsächlich verwendeten Eingabegruppen normalisiert
+- Netz 2: ausgewählte Untergefühle werden über ihre gewichteten Beziehungen zu Hauptgefühlen verrechnet
+- die Hauptgefühle werden intern nach Gewichtung sortiert; die Zahlen bleiben im Dialog unsichtbar
+- Vorschlagsregeln bleiben im Katalog editierbar; Gewichtungen können dort pro Beziehung zwischen 0,1 und 1,0 verändert werden
+- bestehende Verlaufsdaten bleiben erhalten
+- bestehende nicht-modellbezogene Kataloge (Situationen, Körperregionen, Bedürfnisse) bleiben bei der Aktualisierung erhalten
 
-## Empfohlener Gerätewechsel
+Hinweis zur Modellübernahme:
+Beim ersten Start von V0.23 wird ein älterer ungewichteter Regelkatalog auf das neue gewichtete Basismodell aktualisiert. Gespeicherte Verlaufseinträge werden dabei nicht verändert.
 
-1. Auf dem Smartphone unter **Katalog → Gesamt-Backup exportieren** sichern.
-2. Die JSON-Datei auf den Rechner übertragen.
-3. In der Webversion unter **Katalog → Gesamt-Backup wiederherstellen** importieren.
-4. Katalog bequem in der Weboberfläche bearbeiten.
-5. Neues Gesamt-Backup exportieren und auf dem Smartphone wiederherstellen.
-
-Achtung: Die Wiederherstellung ersetzt den lokalen Stand vollständig.
+Nicht geändert:
+- Optik und Navigation
+- Fragestellungen und Dialogreihenfolge
+- Statistik, Verlauf, Import/Export und Gesamt-Backup
