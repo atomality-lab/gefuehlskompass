@@ -1,4 +1,4 @@
-# Gefühlskompass PWA V0.24
+# Gefühlskompass PWA V0.25
 
 - Modellmigration auf Version 2, damit aktuelle gewichtete Standardregeln tatsächlich verwendet werden.
 - Eigene Situationen, Körperregionen, Bedürfnisse, Farben und zusätzliche Untergefühle bleiben erhalten.
